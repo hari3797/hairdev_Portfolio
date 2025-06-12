@@ -1,40 +1,36 @@
-document.addEventListener('DOMContentLoaded', () => {
-
+document.addEventListener('DOMContentLoaded', function() {
     // Smooth scrolling for navigation links
-    const navLinks = document.querySelectorAll('.nav-links a, .btn');
+    const navLinks = document.querySelectorAll('.nav-links a');
 
-    for (const link of navLinks) {
-        link.addEventListener('click', (e) => {
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
             e.preventDefault();
-            const targetId = link.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
             
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+            if (targetSection) {
+                window.scrollTo({
+                    top: targetSection.offsetTop - 60, // Adjust for fixed navbar height
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Smooth scroll for hero button
+    const heroButton = document.querySelector('.hero-buttons a.btn-primary');
+    if (heroButton) {
+        heroButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+
+            if (targetSection) {
+                window.scrollTo({
+                    top: targetSection.offsetTop - 60,
+                    behavior: 'smooth'
                 });
             }
         });
     }
-
-    // Add a subtle fade-in animation on scroll
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = 1;
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, {
-        threshold: 0.1
-    });
-
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-        section.style.opacity = 0;
-        section.style.transform = 'translateY(20px)';
-        section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-        observer.observe(section);
-    });
 });
